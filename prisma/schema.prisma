@@ -1,0 +1,138 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum CardStatus {
+  AVAILABLE
+  SOLD
+}
+
+enum CardCondition {
+  MINT
+  NEAR_MINT
+  EXCELLENT
+  VERY_GOOD
+  GOOD
+  FAIR
+  POOR
+}
+
+enum SubmissionStatus {
+  NEW
+  REVIEWING
+  OFFER_SENT
+  ACCEPTED
+  DECLINED
+  COUNTERED
+}
+
+enum OfferStatus {
+  PENDING
+  ACCEPTED
+  DECLINED
+  COUNTERED
+}
+
+enum OrderStatus {
+  PENDING
+  PAID
+  SHIPPED
+  DELIVERED
+}
+
+model Admin {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Card {
+  id          String        @id @default(cuid())
+  title       String
+  player      String
+  year        String
+  brand       String
+  sport       String        @default("Football")
+  condition   CardCondition
+  price       Float
+  description String?
+  ebayUrl     String?
+  status      CardStatus    @default(AVAILABLE)
+  featured    Boolean       @default(false)
+  photos      CardPhoto[]
+  orders      Order[]
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+}
+
+model CardPhoto {
+  id                String @id @default(cuid())
+  cardId            String
+  url               String
+  cloudinaryPublicId String
+  order             Int    @default(0)
+  card              Card   @relation(fields: [cardId], references: [id], onDelete: Cascade)
+}
+
+model Submission {
+  id           String           @id @default(cuid())
+  status       SubmissionStatus @default(NEW)
+  cardName     String
+  year         String?
+  brand        String?
+  condition    String?
+  description  String?
+  askingPrice  Float?
+  sellerName   String
+  sellerEmail  String
+  sellerPhone  String?
+  token        String           @unique @default(cuid())
+  photos       SubmissionPhoto[]
+  offers       Offer[]
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+}
+
+model SubmissionPhoto {
+  id                String     @id @default(cuid())
+  submissionId      String
+  url               String
+  cloudinaryPublicId String
+  submission        Submission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+}
+
+model Offer {
+  id             String      @id @default(cuid())
+  submissionId   String
+  amount         Float
+  message        String?
+  status         OfferStatus @default(PENDING)
+  counterAmount  Float?
+  counterMessage String?
+  submission     Submission  @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+  createdAt      DateTime    @default(now())
+}
+
+model Order {
+  id                    String      @id @default(cuid())
+  cardId                String
+  buyerEmail            String
+  buyerName             String
+  stripeSessionId       String?     @unique
+  stripePaymentIntentId String?     @unique
+  shippingAddress       Json?
+  status                OrderStatus @default(PENDING)
+  trackingNumber        String?
+  amount                Float
+  card                  Card        @relation(fields: [cardId], references: [id])
+  createdAt             DateTime    @default(now())
+  updatedAt             DateTime    @updatedAt
+}

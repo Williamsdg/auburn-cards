@@ -1,65 +1,121 @@
-import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
+    <>
+      {/* Hero */}
+      <section className="bg-navy text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 text-center">
+          <h1 className="text-4xl sm:text-6xl font-bold tracking-tight mb-6">
+            <span className="text-auburn">Auburn</span> Sports Cards
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+          <p className="text-xl text-white/80 max-w-2xl mx-auto mb-10">
+            Buy, sell, and collect Auburn cards with confidence. Browse our
+            curated collection or sell us your cards for a fair offer.
           </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link
+              href="/shop"
+              className="inline-flex items-center justify-center px-8 py-3 bg-auburn hover:bg-auburn-dark text-white font-semibold rounded-lg transition-colors"
+            >
+              Shop Cards
+            </Link>
+            <Link
+              href="/sell"
+              className="inline-flex items-center justify-center px-8 py-3 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-lg border border-white/20 transition-colors"
+            >
+              Sell Your Cards
+            </Link>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </section>
+
+      {/* How It Works */}
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl font-bold text-center mb-12">How It Works</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="text-center p-6">
+              <div className="w-16 h-16 bg-auburn/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-auburn text-2xl font-bold">1</span>
+              </div>
+              <h3 className="text-lg font-semibold mb-2">Browse or Submit</h3>
+              <p className="text-gray-600">
+                Shop our collection or submit your cards for us to review and
+                make you an offer.
+              </p>
+            </div>
+            <div className="text-center p-6">
+              <div className="w-16 h-16 bg-auburn/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-auburn text-2xl font-bold">2</span>
+              </div>
+              <h3 className="text-lg font-semibold mb-2">Get an Offer</h3>
+              <p className="text-gray-600">
+                We review your submission and send you a fair offer. Accept,
+                decline, or counter — it&apos;s up to you.
+              </p>
+            </div>
+            <div className="text-center p-6">
+              <div className="w-16 h-16 bg-auburn/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-auburn text-2xl font-bold">3</span>
+              </div>
+              <h3 className="text-lg font-semibold mb-2">Easy Transaction</h3>
+              <p className="text-gray-600">
+                Buy securely on our site or complete your sale quickly. Fast
+                shipping and fair prices guaranteed.
+              </p>
+            </div>
+          </div>
         </div>
-      </main>
-    </div>
+      </section>
+
+      {/* CTA */}
+      <section className="py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-3xl font-bold mb-4">Got Cards to Sell?</h2>
+          <p className="text-gray-600 max-w-xl mx-auto mb-8">
+            Submit your Auburn cards and we&apos;ll make you a fair offer. No
+            hassle, no fees — just fast, honest deals.
+          </p>
+          <Link
+            href="/sell"
+            className="inline-flex items-center justify-center px-8 py-3 bg-auburn hover:bg-auburn-dark text-white font-semibold rounded-lg transition-colors"
+          >
+            Submit Your Cards
+          </Link>
+        </div>
+      </section>
+
+      {/* Social Links */}
+      <section className="py-16 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-2xl font-bold text-center mb-8">
+            Find Us Everywhere
+          </h2>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <a
+              href="https://www.instagram.com/auburn.cards"
+              target="_blank"
+              className="inline-flex items-center justify-center px-6 py-3 bg-navy hover:bg-navy-light text-white font-semibold rounded-lg transition-colors gap-2"
+            >
+              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+              </svg>
+              Instagram
+            </a>
+            <a
+              href="https://ebay.us/m/u3T5kW"
+              target="_blank"
+              className="inline-flex items-center justify-center px-6 py-3 bg-navy hover:bg-navy-light text-white font-semibold rounded-lg transition-colors gap-2"
+            >
+              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M5.687 5.023c-1.87 0-3.687 1.312-3.687 3.612v.987h2.089v-.762c0-1.088.75-1.763 1.648-1.763.898 0 1.598.675 1.598 1.763v1.537c0 .713-.15 1.163-.675 1.688l-3.225 3.15C2.285 16.385 2 17.222 2 18.235v.742h7.312v-2.025H4.988c-.075 0-.112-.038-.112-.113 0-.037.037-.075.075-.112l2.475-2.4c1.05-1.013 1.575-1.913 1.575-3.338v-1.387c0-2.3-1.425-3.58-3.314-3.58zm6.163.225V18.977h2.088v-5.287h2.55c2.063 0 3.675-1.388 3.675-3.676v-.15c0-2.212-1.5-3.563-3.563-3.563h-.075zm2.088 2.025h2.287c1.013 0 1.65.675 1.65 1.613v.075c0 1.013-.675 1.65-1.65 1.65h-2.287z" />
+              </svg>
+              eBay Store
+            </a>
+          </div>
+        </div>
+      </section>
+    </>
   );
 }
