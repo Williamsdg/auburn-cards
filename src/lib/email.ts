@@ -1,6 +1,8 @@
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+function getResend() {
+  return new Resend(process.env.RESEND_API_KEY || "");
+}
 const from = process.env.EMAIL_FROM || "Auburn Cards <noreply@auburn.cards>";
 const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
 
@@ -9,7 +11,7 @@ export async function sendSubmissionConfirmation(
   sellerName: string,
   cardName: string
 ) {
-  await resend.emails.send({
+  await getResend().emails.send({
     from,
     to: sellerEmail,
     subject: "We received your card submission!",
@@ -27,7 +29,7 @@ export async function sendNewSubmissionAlert(
   sellerName: string,
   submissionId: string
 ) {
-  await resend.emails.send({
+  await getResend().emails.send({
     from,
     to: process.env.ADMIN_EMAIL || "admin@auburn.cards",
     subject: `New card submission: ${cardName}`,
@@ -47,7 +49,7 @@ export async function sendOfferEmail(
   message: string | null,
   token: string
 ) {
-  await resend.emails.send({
+  await getResend().emails.send({
     from,
     to: sellerEmail,
     subject: `We have an offer for your ${cardName}!`,
@@ -75,7 +77,7 @@ export async function sendOfferResponseAlert(
         ? `Offer declined: ${cardName}`
         : `Counter-offer: ${cardName} — $${counterAmount?.toFixed(2)}`;
 
-  await resend.emails.send({
+  await getResend().emails.send({
     from,
     to: process.env.ADMIN_EMAIL || "admin@auburn.cards",
     subject,
@@ -95,7 +97,7 @@ export async function sendOrderConfirmation(
   amount: number,
   orderId: string
 ) {
-  await resend.emails.send({
+  await getResend().emails.send({
     from,
     to: buyerEmail,
     subject: `Order confirmed: ${cardTitle}`,
@@ -116,7 +118,7 @@ export async function sendShippingUpdate(
   cardTitle: string,
   trackingNumber: string
 ) {
-  await resend.emails.send({
+  await getResend().emails.send({
     from,
     to: buyerEmail,
     subject: `Your card has shipped: ${cardTitle}`,
