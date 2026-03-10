@@ -34,6 +34,7 @@ export default async function EditListingPage({ params }: { params: Params }) {
           cardNumber: card.cardNumber || "",
           condition: card.condition,
           price: card.price.toString(),
+          compareAtPrice: card.compareAtPrice?.toString() || "",
           description: card.description || "",
           ebayUrl: card.ebayUrl || "",
           featured: card.featured,

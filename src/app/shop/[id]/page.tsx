@@ -134,9 +134,23 @@ export default async function CardDetailPage({ params }: { params: Params }) {
               </span>
             </div>
             <h1 className="text-3xl font-bold mb-2">{card.title}</h1>
-            <p className="text-2xl font-bold text-auburn mb-6">
-              {formatPrice(card.price)}
-            </p>
+            {card.compareAtPrice && card.compareAtPrice > card.price ? (
+              <div className="mb-6 flex items-center gap-3">
+                <span className="text-2xl font-bold text-auburn">
+                  {formatPrice(card.price)}
+                </span>
+                <span className="text-lg text-gray-400 line-through">
+                  {formatPrice(card.compareAtPrice)}
+                </span>
+                <span className="text-sm bg-auburn text-white font-bold px-2 py-1 rounded">
+                  {Math.round(((card.compareAtPrice - card.price) / card.compareAtPrice) * 100)}% OFF
+                </span>
+              </div>
+            ) : (
+              <p className="text-2xl font-bold text-auburn mb-6">
+                {formatPrice(card.price)}
+              </p>
+            )}
 
             <div className="space-y-3 mb-8">
               <div className="flex justify-between py-2 border-b border-gray-100">

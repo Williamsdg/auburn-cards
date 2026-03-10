@@ -70,9 +70,10 @@ model Card {
   sport       String?       @default("Football")
   setName     String?
   cardNumber  String?
-  condition   CardCondition
-  price       Float
-  description String?
+  condition      CardCondition
+  price          Float
+  compareAtPrice Float?
+  description    String?
   ebayUrl     String?
   status      CardStatus    @default(AVAILABLE)
   featured    Boolean       @default(false)
@@ -131,6 +132,33 @@ model Offer {
   counterMessage String?
   submission     Submission  @relation(fields: [submissionId], references: [id], onDelete: Cascade)
   createdAt      DateTime    @default(now())
+}
+
+model TrendingCard {
+  id          String   @id @default(cuid())
+  title       String
+  imageUrl    String
+  description String?
+  externalUrl String?
+  sortOrder   Int      @default(0)
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model ExternalDeal {
+  id            String   @id @default(cuid())
+  title         String
+  description   String?
+  imageUrl      String?
+  originalPrice Float?
+  dealPrice     Float?
+  externalUrl   String
+  source        String?
+  active        Boolean  @default(true)
+  sortOrder     Int      @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }
 
 model Order {

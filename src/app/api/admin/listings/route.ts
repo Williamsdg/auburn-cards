@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
 
   try {
     const body = await req.json();
-    const { title, category, player, year, brand, sport, setName, cardNumber, condition, price, description, ebayUrl, featured, photos } = body;
+    const { title, category, player, year, brand, sport, setName, cardNumber, condition, price, compareAtPrice, description, ebayUrl, featured, photos } = body;
 
     if (!title || !player || !year || !brand || !condition || !price) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
@@ -29,6 +29,7 @@ export async function POST(req: NextRequest) {
         cardNumber: cardNumber || null,
         condition: condition as CardCondition,
         price,
+        compareAtPrice: compareAtPrice || null,
         description: description || null,
         ebayUrl: ebayUrl || null,
         featured: featured || false,

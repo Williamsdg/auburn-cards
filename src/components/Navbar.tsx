@@ -19,6 +19,12 @@ export default function Navbar() {
             <Link href="/shop" className="hover:text-auburn transition-colors">
               Shop
             </Link>
+            <Link href="/trending" className="hover:text-auburn transition-colors">
+              Trending
+            </Link>
+            <Link href="/deals" className="hover:text-auburn transition-colors">
+              Deals
+            </Link>
             <Link href="/sell" className="hover:text-auburn transition-colors">
               Sell Your Cards
             </Link>
@@ -78,6 +84,20 @@ export default function Navbar() {
               onClick={() => setMobileOpen(false)}
             >
               Shop
+            </Link>
+            <Link
+              href="/trending"
+              className="block hover:text-auburn transition-colors"
+              onClick={() => setMobileOpen(false)}
+            >
+              Trending
+            </Link>
+            <Link
+              href="/deals"
+              className="block hover:text-auburn transition-colors"
+              onClick={() => setMobileOpen(false)}
+            >
+              Deals
             </Link>
             <Link
               href="/sell"

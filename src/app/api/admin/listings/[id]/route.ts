@@ -14,7 +14,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Params }) {
   try {
     const { id } = await params;
     const body = await req.json();
-    const { title, category, player, year, brand, sport, setName, cardNumber, condition, price, description, ebayUrl, featured, photos } = body;
+    const { title, category, player, year, brand, sport, setName, cardNumber, condition, price, compareAtPrice, description, ebayUrl, featured, photos } = body;
 
     // Delete existing photos and recreate
     await prisma.cardPhoto.deleteMany({ where: { cardId: id } });
@@ -32,6 +32,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Params }) {
         cardNumber: cardNumber || null,
         condition: condition as CardCondition,
         price,
+        compareAtPrice: compareAtPrice || null,
         description: description || null,
         ebayUrl: ebayUrl || null,
         featured: featured || false,

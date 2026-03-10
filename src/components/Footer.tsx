@@ -21,6 +21,12 @@ export default function Footer() {
               <Link href="/shop" className="block hover:text-auburn transition-colors">
                 Shop Cards
               </Link>
+              <Link href="/trending" className="block hover:text-auburn transition-colors">
+                Trending
+              </Link>
+              <Link href="/deals" className="block hover:text-auburn transition-colors">
+                Deals
+              </Link>
               <Link href="/sell" className="block hover:text-auburn transition-colors">
                 Sell Your Cards
               </Link>

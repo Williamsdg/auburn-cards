@@ -17,6 +17,7 @@ type CardItem = {
   brand: string;
   condition: string;
   price: number;
+  compareAtPrice?: number | null;
   status: string;
   photos: { url: string }[];
 };
@@ -73,9 +74,17 @@ export default function CardGrid({ cards }: { cards: CardItem[] }) {
             <p className="text-xs text-gray-500">
               {conditionLabels[card.condition] || card.condition}
             </p>
-            <p className="text-lg font-bold text-auburn mt-2">
-              {formatPrice(card.price)}
-            </p>
+            <div className="mt-2">
+              {card.compareAtPrice && card.compareAtPrice > card.price ? (
+                <div>
+                  <span className="text-xs bg-auburn text-white font-bold px-1.5 py-0.5 rounded mr-2">SALE</span>
+                  <span className="text-lg font-bold text-auburn">{formatPrice(card.price)}</span>
+                  <span className="text-sm text-gray-400 line-through ml-2">{formatPrice(card.compareAtPrice)}</span>
+                </div>
+              ) : (
+                <p className="text-lg font-bold text-auburn">{formatPrice(card.price)}</p>
+              )}
+            </div>
           </div>
         </Link>
       ))}

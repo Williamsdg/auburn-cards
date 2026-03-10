@@ -18,6 +18,7 @@ type CardData = {
   cardNumber: string;
   condition: string;
   price: string;
+  compareAtPrice: string;
   description: string;
   ebayUrl: string;
   featured: boolean;
@@ -35,6 +36,7 @@ const defaultData: CardData = {
   cardNumber: "",
   condition: "NEAR_MINT",
   price: "",
+  compareAtPrice: "",
   description: "",
   ebayUrl: "",
   featured: false,
@@ -76,6 +78,7 @@ export default function ListingForm({
         body: JSON.stringify({
           ...data,
           price: parseFloat(data.price),
+          compareAtPrice: data.compareAtPrice ? parseFloat(data.compareAtPrice) : null,
         }),
       });
 
@@ -193,6 +196,16 @@ export default function ListingForm({
             <input name="price" type="number" step="0.01" min="0" required value={data.price} onChange={handleChange}
               className="w-full pl-8 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-auburn" />
           </div>
+        </div>
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-1">Compare At Price (for sales)</label>
+        <p className="text-xs text-gray-400 mb-1">Set the original price here to show this card as on sale. Leave blank if not on sale.</p>
+        <div className="relative">
+          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">$</span>
+          <input name="compareAtPrice" type="number" step="0.01" min="0" value={data.compareAtPrice} onChange={handleChange}
+            className="w-full pl-8 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-auburn" />
         </div>
       </div>
 

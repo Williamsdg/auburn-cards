@@ -1,6 +1,60 @@
 import Link from "next/link";
+import Image from "next/image";
+import { prisma } from "@/lib/prisma";
+import { formatPrice } from "@/lib/utils";
 
-export default function Home() {
+type PokemonCard = {
+  id: string;
+  name: string;
+  images: { small: string; large: string };
+  set: { name: string };
+  tcgplayer?: {
+    url: string;
+    prices?: Record<string, { market?: number; low?: number }>;
+  };
+};
+
+async function getTrendingPokemon(): Promise<PokemonCard[]> {
+  try {
+    const res = await fetch(
+      "https://api.pokemontcg.io/v2/cards?q=set.id:sv8&orderBy=-set.releaseDate&pageSize=4",
+      { next: { revalidate: 3600 } }
+    );
+    if (!res.ok) return [];
+    const json = await res.json();
+    return json.data || [];
+  } catch {
+    return [];
+  }
+}
+
+function getPokemonPrice(card: PokemonCard): number | null {
+  if (!card.tcgplayer?.prices) return null;
+  for (const variant of Object.values(card.tcgplayer.prices)) {
+    if (variant.market) return variant.market;
+    if (variant.low) return variant.low;
+  }
+  return null;
+}
+
+export default async function Home() {
+  const [pokemonCards, saleCards] = await Promise.all([
+    getTrendingPokemon(),
+    prisma.card.findMany({
+      where: {
+        status: "AVAILABLE",
+        compareAtPrice: { not: null },
+      },
+      include: { photos: { orderBy: { order: "asc" }, take: 1 } },
+      orderBy: { createdAt: "desc" },
+      take: 4,
+    }),
+  ]);
+
+  const actualSaleCards = saleCards.filter(
+    (c) => c.compareAtPrice && c.compareAtPrice > c.price
+  );
+
   return (
     <>
       {/* Hero */}
@@ -30,8 +84,123 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Trending Preview */}
+      {pokemonCards.length > 0 && (
+        <section className="py-16">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex items-center justify-between mb-8">
+              <h2 className="text-2xl font-bold">Trending Right Now</h2>
+              <Link
+                href="/trending"
+                className="text-auburn hover:text-auburn-dark font-medium transition-colors"
+              >
+                View All &rarr;
+              </Link>
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+              {pokemonCards.map((card) => {
+                const price = getPokemonPrice(card);
+                return (
+                  <a
+                    key={card.id}
+                    href={card.tcgplayer?.url || "#"}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow"
+                  >
+                    <div className="aspect-[3/4] relative bg-gray-100">
+                      <Image
+                        src={card.images.large || card.images.small}
+                        alt={card.name}
+                        fill
+                        className="object-contain group-hover:scale-105 transition-transform p-2"
+                        sizes="(max-width: 640px) 50vw, 25vw"
+                      />
+                    </div>
+                    <div className="p-3">
+                      <h3 className="font-semibold text-sm line-clamp-1 group-hover:text-auburn transition-colors">
+                        {card.name}
+                      </h3>
+                      <p className="text-xs text-gray-500">{card.set.name}</p>
+                      {price && (
+                        <p className="text-sm font-bold text-auburn mt-1">
+                          ${price.toFixed(2)}
+                        </p>
+                      )}
+                    </div>
+                  </a>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* On Sale Now Preview */}
+      {actualSaleCards.length > 0 && (
+        <section className="py-16 bg-gray-50">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex items-center justify-between mb-8">
+              <h2 className="text-2xl font-bold">On Sale Now</h2>
+              <Link
+                href="/deals"
+                className="text-auburn hover:text-auburn-dark font-medium transition-colors"
+              >
+                View All Deals &rarr;
+              </Link>
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+              {actualSaleCards.map((card) => (
+                <Link
+                  key={card.id}
+                  href={`/shop/${card.id}`}
+                  className="group bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow"
+                >
+                  <div className="aspect-[3/4] relative bg-gray-100">
+                    {card.photos[0] ? (
+                      <Image
+                        src={card.photos[0].url}
+                        alt={card.title}
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform"
+                        sizes="(max-width: 640px) 50vw, 25vw"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-gray-400">
+                        No photo
+                      </div>
+                    )}
+                    <span className="absolute top-2 right-2 bg-auburn text-white text-xs font-bold px-2 py-1 rounded">
+                      {Math.round(
+                        ((card.compareAtPrice! - card.price) /
+                          card.compareAtPrice!) *
+                          100
+                      )}
+                      % OFF
+                    </span>
+                  </div>
+                  <div className="p-3">
+                    <h3 className="font-semibold text-sm line-clamp-1 group-hover:text-auburn transition-colors">
+                      {card.title}
+                    </h3>
+                    <div className="mt-1 flex items-center gap-2">
+                      <span className="text-sm font-bold text-auburn">
+                        {formatPrice(card.price)}
+                      </span>
+                      <span className="text-xs text-gray-400 line-through">
+                        {formatPrice(card.compareAtPrice!)}
+                      </span>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* How It Works */}
-      <section className="py-20 bg-gray-50">
+      <section className={`py-20 ${actualSaleCards.length > 0 ? "" : "bg-gray-50"}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-center mb-12">How It Works</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
