@@ -7,10 +7,10 @@ export default function Home() {
       <section className="bg-navy text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 text-center">
           <h1 className="text-4xl sm:text-6xl font-bold tracking-tight mb-6">
-            <span className="text-auburn">Auburn</span> Sports Cards
+            <span className="text-auburn">Auburn</span> Cards
           </h1>
           <p className="text-xl text-white/80 max-w-2xl mx-auto mb-10">
-            Buy, sell, and collect Auburn cards with confidence. Browse our
+            Your source for Pokemon &amp; sports trading cards. Browse our
             curated collection or sell us your cards for a fair offer.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -74,8 +74,8 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl font-bold mb-4">Got Cards to Sell?</h2>
           <p className="text-gray-600 max-w-xl mx-auto mb-8">
-            Submit your Auburn cards and we&apos;ll make you a fair offer. No
-            hassle, no fees — just fast, honest deals.
+            Submit your Pokemon or sports cards and we&apos;ll make you a fair offer.
+            No hassle, no fees — just fast, honest deals.
           </p>
           <Link
             href="/sell"

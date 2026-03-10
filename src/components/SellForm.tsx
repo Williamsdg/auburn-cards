@@ -11,9 +11,12 @@ export default function SellForm() {
   const [loading, setLoading] = useState(false);
   const [images, setImages] = useState<UploadedImage[]>([]);
   const [formData, setFormData] = useState({
+    category: "",
     cardName: "",
     year: "",
     brand: "",
+    sport: "",
+    setName: "",
     condition: "",
     description: "",
     askingPrice: "",
@@ -76,6 +79,24 @@ export default function SellForm() {
         </p>
       </div>
 
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-1">
+          Card Type *
+        </label>
+        <select
+          name="category"
+          required
+          value={formData.category}
+          onChange={handleChange}
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-auburn focus:border-transparent"
+        >
+          <option value="">Select type</option>
+          <option value="POKEMON">Pokemon</option>
+          <option value="SPORTS">Sports Card</option>
+          <option value="TCG">Other Trading Card</option>
+        </select>
+      </div>
+
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -86,7 +107,7 @@ export default function SellForm() {
             required
             value={formData.cardName}
             onChange={handleChange}
-            placeholder="e.g., Bo Jackson Rookie Card"
+            placeholder={formData.category === "POKEMON" ? "e.g., Charizard ex" : "e.g., Bo Jackson Rookie Card"}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-auburn focus:border-transparent"
           />
         </div>
@@ -98,7 +119,7 @@ export default function SellForm() {
             name="year"
             value={formData.year}
             onChange={handleChange}
-            placeholder="e.g., 1986"
+            placeholder="e.g., 2024"
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-auburn focus:border-transparent"
           />
         </div>
@@ -113,30 +134,65 @@ export default function SellForm() {
             name="brand"
             value={formData.brand}
             onChange={handleChange}
-            placeholder="e.g., Topps, Panini"
+            placeholder={formData.category === "POKEMON" ? "e.g., Pokemon TCG" : "e.g., Topps, Panini"}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-auburn focus:border-transparent"
           />
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            Condition
+            Set / Series
+          </label>
+          <input
+            name="setName"
+            value={formData.setName}
+            onChange={handleChange}
+            placeholder={formData.category === "POKEMON" ? "e.g., Prismatic Evolutions" : "e.g., Prizm, Topps Chrome"}
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-auburn focus:border-transparent"
+          />
+        </div>
+      </div>
+
+      {formData.category === "SPORTS" && (
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Sport
           </label>
           <select
-            name="condition"
-            value={formData.condition}
+            name="sport"
+            value={formData.sport}
             onChange={handleChange}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-auburn focus:border-transparent"
           >
-            <option value="">Select condition</option>
-            <option value="Mint">Mint</option>
-            <option value="Near Mint">Near Mint</option>
-            <option value="Excellent">Excellent</option>
-            <option value="Very Good">Very Good</option>
-            <option value="Good">Good</option>
-            <option value="Fair">Fair</option>
-            <option value="Poor">Poor</option>
+            <option value="">Select sport</option>
+            <option value="Football">Football</option>
+            <option value="Basketball">Basketball</option>
+            <option value="Baseball">Baseball</option>
+            <option value="Soccer">Soccer</option>
+            <option value="Hockey">Hockey</option>
+            <option value="Other">Other</option>
           </select>
         </div>
+      )}
+
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-1">
+          Condition
+        </label>
+        <select
+          name="condition"
+          value={formData.condition}
+          onChange={handleChange}
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-auburn focus:border-transparent"
+        >
+          <option value="">Select condition</option>
+          <option value="Mint">Mint</option>
+          <option value="Near Mint">Near Mint</option>
+          <option value="Excellent">Excellent</option>
+          <option value="Very Good">Very Good</option>
+          <option value="Good">Good</option>
+          <option value="Fair">Fair</option>
+          <option value="Poor">Poor</option>
+        </select>
       </div>
 
       <div>

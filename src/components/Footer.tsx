@@ -10,8 +10,8 @@ export default function Footer() {
               <span className="text-auburn">Auburn</span>.cards
             </h3>
             <p className="text-sm">
-              Your trusted source for Auburn sports cards. Buy, sell, and
-              collect with confidence.
+              Your trusted source for Pokemon &amp; sports trading cards.
+              Buy, sell, and collect with confidence.
             </p>
           </div>
 

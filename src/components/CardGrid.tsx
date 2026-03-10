@@ -2,9 +2,16 @@ import Link from "next/link";
 import Image from "next/image";
 import { formatPrice, conditionLabels } from "@/lib/utils";
 
+const categoryLabels: Record<string, string> = {
+  SPORTS: "Sports",
+  POKEMON: "Pokemon",
+  TCG: "TCG",
+};
+
 type CardItem = {
   id: string;
   title: string;
+  category?: string;
   player: string;
   year: string;
   brand: string;
@@ -49,6 +56,11 @@ export default function CardGrid({ cards }: { cards: CardItem[] }) {
               <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
                 <span className="text-white font-bold text-xl">SOLD</span>
               </div>
+            )}
+            {card.category && (
+              <span className="absolute top-2 left-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-white/90 text-gray-700">
+                {categoryLabels[card.category] || card.category}
+              </span>
             )}
           </div>
           <div className="p-4">

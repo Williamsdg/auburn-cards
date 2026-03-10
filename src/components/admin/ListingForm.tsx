@@ -9,10 +9,13 @@ type UploadedImage = { url: string; publicId: string };
 type CardData = {
   id?: string;
   title: string;
+  category: string;
   player: string;
   year: string;
   brand: string;
   sport: string;
+  setName: string;
+  cardNumber: string;
   condition: string;
   price: string;
   description: string;
@@ -23,10 +26,13 @@ type CardData = {
 
 const defaultData: CardData = {
   title: "",
+  category: "SPORTS",
   player: "",
   year: "",
   brand: "",
   sport: "Football",
+  setName: "",
+  cardNumber: "",
   condition: "NEAR_MINT",
   price: "",
   description: "",
@@ -98,16 +104,29 @@ export default function ListingForm({
         />
       </div>
 
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-1">Category *</label>
+        <select name="category" required value={data.category} onChange={handleChange}
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-auburn">
+          <option value="SPORTS">Sports Card</option>
+          <option value="POKEMON">Pokemon</option>
+          <option value="TCG">Other TCG</option>
+        </select>
+      </div>
+
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Title *</label>
           <input name="title" required value={data.title} onChange={handleChange}
-            placeholder="e.g., 2024 Panini Prizm Bo Nix Rookie"
+            placeholder={data.category === "POKEMON" ? "e.g., Charizard ex SAR" : "e.g., 2024 Panini Prizm Bo Nix Rookie"}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-auburn" />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Player *</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            {data.category === "POKEMON" ? "Pokemon / Character *" : "Player *"}
+          </label>
           <input name="player" required value={data.player} onChange={handleChange}
+            placeholder={data.category === "POKEMON" ? "e.g., Charizard" : "e.g., Bo Nix"}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-auburn" />
         </div>
       </div>
@@ -121,21 +140,39 @@ export default function ListingForm({
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Brand *</label>
           <input name="brand" required value={data.brand} onChange={handleChange}
+            placeholder={data.category === "POKEMON" ? "e.g., Pokemon TCG" : "e.g., Panini"}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-auburn" />
         </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Sport</label>
-          <select name="sport" value={data.sport} onChange={handleChange}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-auburn">
-            <option value="Football">Football</option>
-            <option value="Basketball">Basketball</option>
-            <option value="Baseball">Baseball</option>
-            <option value="Other">Other</option>
-          </select>
-        </div>
+        {data.category === "SPORTS" ? (
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Sport</label>
+            <select name="sport" value={data.sport} onChange={handleChange}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-auburn">
+              <option value="Football">Football</option>
+              <option value="Basketball">Basketball</option>
+              <option value="Baseball">Baseball</option>
+              <option value="Soccer">Soccer</option>
+              <option value="Hockey">Hockey</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+        ) : (
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Card Number</label>
+            <input name="cardNumber" value={data.cardNumber} onChange={handleChange}
+              placeholder="e.g., 006/091"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-auburn" />
+          </div>
+        )}
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Set / Series</label>
+          <input name="setName" value={data.setName} onChange={handleChange}
+            placeholder={data.category === "POKEMON" ? "e.g., Prismatic Evolutions" : "e.g., Prizm, Topps Chrome"}
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-auburn" />
+        </div>
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Condition *</label>
           <select name="condition" required value={data.condition} onChange={handleChange}
@@ -158,6 +195,15 @@ export default function ListingForm({
           </div>
         </div>
       </div>
+
+      {data.category === "SPORTS" && (
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Card Number</label>
+          <input name="cardNumber" value={data.cardNumber} onChange={handleChange}
+            placeholder="e.g., #101"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-auburn" />
+        </div>
+      )}
 
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>

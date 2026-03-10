@@ -9,9 +9,12 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     const {
+      category,
       cardName,
       year,
       brand,
+      sport,
+      setName,
       condition,
       description,
       askingPrice,
@@ -30,9 +33,12 @@ export async function POST(req: NextRequest) {
 
     const submission = await prisma.submission.create({
       data: {
+        category: category || null,
         cardName,
         year: year || null,
         brand: brand || null,
+        sport: sport || null,
+        setName: setName || null,
         condition: condition || null,
         description: description || null,
         askingPrice: askingPrice || null,

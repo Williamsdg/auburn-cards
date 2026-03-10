@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
 
   try {
     const body = await req.json();
-    const { title, player, year, brand, sport, condition, price, description, ebayUrl, featured, photos } = body;
+    const { title, category, player, year, brand, sport, setName, cardNumber, condition, price, description, ebayUrl, featured, photos } = body;
 
     if (!title || !player || !year || !brand || !condition || !price) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
@@ -20,10 +20,13 @@ export async function POST(req: NextRequest) {
     const card = await prisma.card.create({
       data: {
         title,
+        category: category || "SPORTS",
         player,
         year,
         brand,
-        sport: sport || "Football",
+        sport: sport || null,
+        setName: setName || null,
+        cardNumber: cardNumber || null,
         condition: condition as CardCondition,
         price,
         description: description || null,

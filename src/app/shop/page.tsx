@@ -5,12 +5,13 @@ import CardFilters from "@/components/CardFilters";
 import { CardCondition, CardStatus } from "@/generated/prisma/client";
 
 export const metadata = {
-  title: "Shop Cards | Auburn Cards",
-  description: "Browse our collection of Auburn sports cards.",
+  title: "Shop Pokemon & Sports Trading Cards | Auburn Cards",
+  description: "Browse our collection of Pokemon cards, sports cards, and trading card games. Find rare cards at fair prices with fast shipping.",
 };
 
 type SearchParams = Promise<{
   q?: string;
+  category?: string;
   sport?: string;
   condition?: string;
   sort?: string;
@@ -26,7 +27,12 @@ async function getCards(searchParams: SearchParams) {
       { title: { contains: params.q, mode: "insensitive" } },
       { player: { contains: params.q, mode: "insensitive" } },
       { brand: { contains: params.q, mode: "insensitive" } },
+      { setName: { contains: params.q, mode: "insensitive" } },
     ];
+  }
+
+  if (params.category) {
+    where.category = params.category;
   }
 
   if (params.sport) {
@@ -60,7 +66,7 @@ export default async function ShopPage({
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <h1 className="text-3xl font-bold mb-2">Shop Cards</h1>
       <p className="text-gray-600 mb-8">
-        Browse our curated collection of Auburn sports cards.
+        Browse our collection of Pokemon &amp; sports trading cards.
       </p>
 
       <Suspense fallback={<div>Loading filters...</div>}>

@@ -45,6 +45,12 @@ enum OrderStatus {
   DELIVERED
 }
 
+enum CardCategory {
+  SPORTS
+  POKEMON
+  TCG
+}
+
 model Admin {
   id           String   @id @default(cuid())
   email        String   @unique
@@ -57,10 +63,13 @@ model Admin {
 model Card {
   id          String        @id @default(cuid())
   title       String
+  category    CardCategory  @default(SPORTS)
   player      String
   year        String
   brand       String
-  sport       String        @default("Football")
+  sport       String?       @default("Football")
+  setName     String?
+  cardNumber  String?
   condition   CardCondition
   price       Float
   description String?
@@ -85,9 +94,12 @@ model CardPhoto {
 model Submission {
   id           String           @id @default(cuid())
   status       SubmissionStatus @default(NEW)
+  category     String?          @default("SPORTS")
   cardName     String
   year         String?
   brand        String?
+  sport        String?
+  setName      String?
   condition    String?
   description  String?
   askingPrice  Float?

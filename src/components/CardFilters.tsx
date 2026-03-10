@@ -3,7 +3,13 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback } from "react";
 
-const sports = ["Football", "Basketball", "Baseball", "Other"];
+const categories = [
+  { value: "POKEMON", label: "Pokemon" },
+  { value: "SPORTS", label: "Sports" },
+  { value: "TCG", label: "Other TCG" },
+];
+
+const sports = ["Football", "Basketball", "Baseball", "Soccer", "Hockey", "Other"];
 const conditions = [
   { value: "MINT", label: "Mint" },
   { value: "NEAR_MINT", label: "Near Mint" },
@@ -26,14 +32,20 @@ export default function CardFilters() {
       } else {
         params.delete(key);
       }
+      // Clear sport filter when switching away from SPORTS category
+      if (key === "category" && value !== "SPORTS") {
+        params.delete("sport");
+      }
       params.delete("page");
       router.push(`/shop?${params.toString()}`);
     },
     [router, searchParams]
   );
 
+  const currentCategory = searchParams.get("category") || "";
+
   return (
-    <div className="flex flex-col sm:flex-row gap-4 mb-8">
+    <div className="flex flex-col sm:flex-row gap-4 mb-8 flex-wrap">
       <input
         type="text"
         placeholder="Search cards..."
@@ -43,17 +55,32 @@ export default function CardFilters() {
       />
 
       <select
-        defaultValue={searchParams.get("sport") || ""}
-        onChange={(e) => updateFilter("sport", e.target.value)}
+        defaultValue={currentCategory}
+        onChange={(e) => updateFilter("category", e.target.value)}
         className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-auburn focus:border-transparent"
       >
-        <option value="">All Sports</option>
-        {sports.map((sport) => (
-          <option key={sport} value={sport}>
-            {sport}
+        <option value="">All Categories</option>
+        {categories.map((cat) => (
+          <option key={cat.value} value={cat.value}>
+            {cat.label}
           </option>
         ))}
       </select>
+
+      {(!currentCategory || currentCategory === "SPORTS") && (
+        <select
+          defaultValue={searchParams.get("sport") || ""}
+          onChange={(e) => updateFilter("sport", e.target.value)}
+          className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-auburn focus:border-transparent"
+        >
+          <option value="">All Sports</option>
+          {sports.map((sport) => (
+            <option key={sport} value={sport}>
+              {sport}
+            </option>
+          ))}
+        </select>
+      )}
 
       <select
         defaultValue={searchParams.get("condition") || ""}
