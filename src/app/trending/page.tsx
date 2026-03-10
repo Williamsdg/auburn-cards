@@ -22,10 +22,13 @@ type PokemonCard = {
 
 async function getTrendingPokemon(): Promise<PokemonCard[]> {
   try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 10000);
     const res = await fetch(
       "https://api.pokemontcg.io/v2/cards?q=set.id:sv8&orderBy=-set.releaseDate&pageSize=8",
-      { next: { revalidate: 3600 } }
+      { next: { revalidate: 3600 }, signal: controller.signal }
     );
+    clearTimeout(timeout);
     if (!res.ok) return [];
     const json = await res.json();
     return json.data || [];
